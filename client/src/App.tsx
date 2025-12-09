@@ -2,7 +2,16 @@
 import { useState, useEffect, useReducer } from "react";
 
 // Mantine
-import { ActionIcon, Group, Burger, Text, useMantineColorScheme, Divider, ScrollArea, AppShell } from "@mantine/core";
+import {
+  ActionIcon,
+  Group,
+  Burger,
+  Text,
+  useMantineColorScheme,
+  Divider,
+  ScrollArea,
+  AppShell,
+} from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 
@@ -15,17 +24,17 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 // Types
-import FolderType from "./types/FolderType";
-import FileType from "./types/FileType";
+import FolderType from "./types/FolderType.js";
+import FileType from "./types/FileType.js";
 
 // Components
-import MarkdownEditor from "./components/MarkdownEditor";
-import MarkdownViewer from "./components/MarkdownViewer";
-import FileExplorerPanel from "./components/FileExplorerPanel";
-import Toolbar from "./components/Toolbar";
+import MarkdownEditor from "./components/MarkdownEditor.js";
+import MarkdownViewer from "./components/MarkdownViewer.js";
+import FileExplorerPanel from "./components/FileExplorerPanel.js";
+import Toolbar from "./components/Toolbar.js";
 
 // Utils
-import iconStyle from "./utils/iconStyle";
+import iconStyle from "./utils/iconStyle.js";
 
 const enum ACTIONS {
   SET_DATA,
@@ -56,7 +65,9 @@ const MainPage = () => {
   // localStorage.clear();
   // localStorage.setItem('data', JSON.stringify(testData));
 
-  const [selectedFile, setSelectedFile] = useState<selectedFileType | null>(null); // The ID of the currently selected file, or -1 if none is selected.
+  const [selectedFile, setSelectedFile] = useState<selectedFileType | null>(
+    null
+  ); // The ID of the currently selected file, or -1 if none is selected.
 
   // editedFiles keeps a cache of all files that have been edited (opening a file by clicking on it will count as it being 'edited',
   // even if the actual contents of it are unchanged), which includes their id, parent folder ids, and body.
@@ -94,7 +105,10 @@ const MainPage = () => {
           if (res.data.data) {
             // let newData = JSON.parse(res.data.data);
             // newData = [...data, ...newData];
-            dispatch({ type: ACTIONS.SET_DATA, payload: { fetchedData: JSON.parse(res.data.data) } });
+            dispatch({
+              type: ACTIONS.SET_DATA,
+              payload: { fetchedData: JSON.parse(res.data.data) },
+            });
           } else {
             dispatch({ type: ACTIONS.SET_DATA, payload: { fetchedData: [] } });
           }
@@ -152,15 +166,22 @@ const MainPage = () => {
             }
           } else {
             for (let i = 0; i < action.payload.idChain.length; i++) {
-              draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+              draft = draft.find(
+                (folder: FolderType) => folder.id === action.payload.idChain[i]
+              ).items;
             }
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.targetItemId);
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.targetItemId
+            );
             draft.expand = true;
             if (action.payload.itemType === "Folder") {
               draft.items = [
                 {
                   id: uuidv4(),
-                  parentFolderIds: [...action.payload.idChain, action.payload.targetItemId],
+                  parentFolderIds: [
+                    ...action.payload.idChain,
+                    action.payload.targetItemId,
+                  ],
                   type: "Folder",
                   name: "",
                   isExpand: false,
@@ -173,7 +194,10 @@ const MainPage = () => {
               draft.items = [
                 {
                   id: uuidv4(),
-                  parentFolderIds: [...action.payload.idChain, action.payload.targetItemId],
+                  parentFolderIds: [
+                    ...action.payload.idChain,
+                    action.payload.targetItemId,
+                  ],
                   type: "File",
                   name: "",
                   body: "",
@@ -189,25 +213,37 @@ const MainPage = () => {
         case ACTIONS.UPDATE_FILE_BODY:
           console.log("IN UPDATE FILE BODY");
           for (let i = 0; i < action.payload.idChain.length; i++) {
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.idChain[i]
+            ).items;
           }
-          draft = draft.find((item: FileType) => item.id === action.payload.targetItemId);
+          draft = draft.find(
+            (item: FileType) => item.id === action.payload.targetItemId
+          );
           draft.body = action.payload.targetItemBody;
           break;
 
         case ACTIONS.UPDATE_ITEM_NAME:
           console.log("UPDATE_ITEM_NAME");
           for (let i = 0; i < action.payload.idChain.length; i++) {
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.idChain[i]
+            ).items;
           }
-          draft = draft.find((item: FolderType | FileType) => item.id === action.payload.targetItemId);
+          draft = draft.find(
+            (item: FolderType | FileType) =>
+              item.id === action.payload.targetItemId
+          );
           console.log(action.payload.newItemName);
           draft.name = action.payload.newItemName;
           draft.isEditingName = false;
 
           if (selectedFile !== null) {
             if (action.payload.targetItemId === selectedFile.id) {
-              setSelectedFile({ ...selectedFile, name: action.payload.newItemName });
+              setSelectedFile({
+                ...selectedFile,
+                name: action.payload.newItemName,
+              });
             }
           }
 
@@ -216,9 +252,14 @@ const MainPage = () => {
 
         case ACTIONS.EDIT_ITEM:
           for (let i = 0; i < action.payload.idChain.length; i++) {
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.idChain[i]
+            ).items;
           }
-          draft = draft.find((item: FolderType | FileType) => item.id === action.payload.targetItemId);
+          draft = draft.find(
+            (item: FolderType | FileType) =>
+              item.id === action.payload.targetItemId
+          );
           draft.isEditingName = true;
           break;
 
@@ -228,10 +269,15 @@ const MainPage = () => {
         case ACTIONS.DELETE_ITEM:
           // Go through the parent folder ids of the item to be deleted.
           for (let i = 0; i < action.payload.idChain.length; i++) {
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.idChain[i]
+            ).items;
           }
           // We have arrived at the direct parent of the item, so find this item within the folder and get its index.
-          const index = draft.findIndex((item: FolderType | FileType) => item.id === action.payload.targetItemId);
+          const index = draft.findIndex(
+            (item: FolderType | FileType) =>
+              item.id === action.payload.targetItemId
+          );
 
           draft.splice(index, 1);
 
@@ -244,21 +290,33 @@ const MainPage = () => {
           if (action.payload.itemType === "Folder") {
             setEditedFiles(
               editedFiles.filter((fileData: EditedFilesType) => {
-                if (!fileData.parentFolderIds.includes(action.payload.targetItemId)) {
+                if (
+                  !fileData.parentFolderIds.includes(
+                    action.payload.targetItemId
+                  )
+                ) {
                   return fileData;
                 }
               })
             );
             setRecentFileTabs(
               recentFileTabs.filter((fileData: RecentFileTabType) => {
-                if (!fileData.parentFolderIds.includes(action.payload.targetItemId)) {
+                if (
+                  !fileData.parentFolderIds.includes(
+                    action.payload.targetItemId
+                  )
+                ) {
                   return fileData;
                 }
               })
             );
 
             // If the currently selected file is contained within this deleted folder, then we want to deselect this file
-            if (selectedFile?.parentFolderIds.includes(action.payload.targetItemId)) {
+            if (
+              selectedFile?.parentFolderIds.includes(
+                action.payload.targetItemId
+              )
+            ) {
               setSelectedFile(null);
               setTextEditor("");
             }
@@ -294,9 +352,13 @@ const MainPage = () => {
         case ACTIONS.EXPAND_FOLDER:
           console.log("IN EXPAND FOLDER");
           for (let i = 0; i < action.payload.idChain.length; i++) {
-            draft = draft.find((folder: FolderType) => folder.id === action.payload.idChain[i]).items;
+            draft = draft.find(
+              (folder: FolderType) => folder.id === action.payload.idChain[i]
+            ).items;
           }
-          draft = draft.find((folder: FolderType) => folder.id === action.payload.targetFolderId);
+          draft = draft.find(
+            (folder: FolderType) => folder.id === action.payload.targetFolderId
+          );
 
           if (action.payload.isExpand) {
             draft.isExpand = true;
@@ -312,7 +374,11 @@ const MainPage = () => {
     []
   );
 
-  const handleAddItem = (idChain: string[] | null, targetItemId: string | null, itemType: string) => {
+  const handleAddItem = (
+    idChain: string[] | null,
+    targetItemId: string | null,
+    itemType: string
+  ) => {
     dispatch({
       type: ACTIONS.ADD_ITEM,
       payload: { idChain, targetItemId, itemType },
@@ -324,7 +390,11 @@ const MainPage = () => {
   // Handles the expanding/minimising of a folder (when a folder is expanded,
   // its subfolders are shown).
   //
-  const handleToggleExpandFolder = (idChain: string[], targetFolderId: string, isExpand: boolean) => {
+  const handleToggleExpandFolder = (
+    idChain: string[],
+    targetFolderId: string,
+    isExpand: boolean
+  ) => {
     dispatch({
       type: ACTIONS.EXPAND_FOLDER,
       payload: { idChain, targetFolderId, isExpand },
@@ -332,7 +402,11 @@ const MainPage = () => {
   };
 
   // Handles the updating of the folder name, when the user has saved the changes to the new name of the folder.
-  const handleUpdateItemName = (idChain: string[], targetItemId: string, newItemName: string) => {
+  const handleUpdateItemName = (
+    idChain: string[],
+    targetItemId: string,
+    newItemName: string
+  ) => {
     // const handleUpdateItemName = (idChain: string[], targetItemId: string, newItemName: string, newlyCreated: boolean) => {
     dispatch({
       type: ACTIONS.UPDATE_ITEM_NAME,
@@ -342,7 +416,9 @@ const MainPage = () => {
 
     // If it's a file, we also want to update the name displayed on its file tab.
     const newRecentFileTabs = [...recentFileTabs];
-    const existingFile = newRecentFileTabs.find((file) => file.id === targetItemId);
+    const existingFile = newRecentFileTabs.find(
+      (file) => file.id === targetItemId
+    );
     if (existingFile) {
       existingFile.name = newItemName;
       setRecentFileTabs(newRecentFileTabs);
@@ -373,8 +449,15 @@ const MainPage = () => {
   Handles the deletion of a particular file/folder.
   Unlike editing the contents of a file, this will delete the file/folder directly from the main 'data' state
   */
-  const handleDeleteItem = (idChain: string[], targetItemId: string, itemType: string) => {
-    dispatch({ type: ACTIONS.DELETE_ITEM, payload: { idChain, targetItemId, itemType } });
+  const handleDeleteItem = (
+    idChain: string[],
+    targetItemId: string,
+    itemType: string
+  ) => {
+    dispatch({
+      type: ACTIONS.DELETE_ITEM,
+      payload: { idChain, targetItemId, itemType },
+    });
   };
 
   /*
@@ -385,7 +468,11 @@ const MainPage = () => {
   If the new file was opened previously, then its contents will just be updated in 'editedFiles', but if it was not
   opened previously then a new array for that file will be added to 'editedFiles'.
   */
-  const handleSelectFile = (id: string, parentFolderIds: string[], name: string) => {
+  const handleSelectFile = (
+    id: string,
+    parentFolderIds: string[],
+    name: string
+  ) => {
     // When the user selects a different file, we want to save the contents of the previous file (contents of 'textEditor')
     // into 'editedFiles'. However, ONLY DO THIS if a previous file was already selected.
     if (selectedFile !== null) {
@@ -415,10 +502,16 @@ const MainPage = () => {
     if (!found) {
       let d = [...data];
       for (let i = 0; i < parentFolderIds.length; i++) {
-        d = d.find((folder: FolderType) => folder.id === parentFolderIds[i]).items;
+        d = d.find(
+          (folder: FolderType) => folder.id === parentFolderIds[i]
+        ).items;
       }
       const nextFile = d.find((item: FolderType | FileType) => item.id === id);
-      const newFileObj: EditedFilesType = { id, parentFolderIds, body: nextFile.body };
+      const newFileObj: EditedFilesType = {
+        id,
+        parentFolderIds,
+        body: nextFile.body,
+      };
       nextFileBody = nextFile.body;
       setEditedFiles([...editedFiles, newFileObj]);
     }
@@ -442,7 +535,11 @@ const MainPage = () => {
   };
 
   // Handles the creation of a file tab for this file (if not there already) if the user double-clicks on it.
-  const handleAddFileTab = (id: string, name: string, parentFolderIds: string[]) => {
+  const handleAddFileTab = (
+    id: string,
+    name: string,
+    parentFolderIds: string[]
+  ) => {
     // Check if there is already a file tab for the file
     let found = false;
     for (let tab of recentFileTabs) {
@@ -484,19 +581,30 @@ const MainPage = () => {
     }
 
     for (let fileData of editedFilesCopy) {
-      dispatch({ type: ACTIONS.UPDATE_FILE_BODY, payload: { targetItemId: fileData.id, idChain: fileData.parentFolderIds, targetItemBody: fileData.body } });
+      dispatch({
+        type: ACTIONS.UPDATE_FILE_BODY,
+        payload: {
+          targetItemId: fileData.id,
+          idChain: fileData.parentFolderIds,
+          targetItemBody: fileData.body,
+        },
+      });
     }
     setCanSaveToDB(true);
     notifications.show({
       color: "green",
       title: "Success!",
-      message: "Your files have been saved to state. You may now save them to your account.",
+      message:
+        "Your files have been saved to state. You may now save them to your account.",
     });
   };
 
   const logout = async () => {
     try {
-      const res = await axios({ method: "get", url: "https://mte2-backend.onrender.com/logout" });
+      const res = await axios({
+        method: "get",
+        url: "https://mte2-backend.onrender.com/logout",
+      });
       setIsLoggedIn(false);
       setSelectedFile(null);
       setTextEditor("");
@@ -515,7 +623,11 @@ const MainPage = () => {
 
   const handleSaveToDB = async () => {
     try {
-      const res = await axios({ method: "post", url: "https://mte2-backend.onrender.com/saveData", data: { data: JSON.stringify(data) } });
+      const res = await axios({
+        method: "post",
+        url: "https://mte2-backend.onrender.com/saveData",
+        data: { data: JSON.stringify(data) },
+      });
       console.log(res);
       notifications.show({
         color: "green",
@@ -527,21 +639,28 @@ const MainPage = () => {
       notifications.show({
         color: "red",
         title: "Oops!",
-        message: "There was an error in trying to save your files to your account.",
+        message:
+          "There was an error in trying to save your files to your account.",
       });
     }
   };
 
   const handleFetchDataFromDB = async () => {
     try {
-      const res = await axios({ method: "get", url: "https://mte2-backend.onrender.com/getData" });
+      const res = await axios({
+        method: "get",
+        url: "https://mte2-backend.onrender.com/getData",
+      });
       console.log(res);
       if (res.data.data) {
         setSelectedFile(null);
         setTextEditor("");
         setEditedFiles([]);
         setRecentFileTabs([]);
-        dispatch({ type: ACTIONS.SET_DATA, payload: { fetchedData: JSON.parse(res.data.data) } });
+        dispatch({
+          type: ACTIONS.SET_DATA,
+          payload: { fetchedData: JSON.parse(res.data.data) },
+        });
         notifications.show({
           color: "green",
           title: "Success!",
@@ -570,7 +689,12 @@ const MainPage = () => {
     >
       <AppShell.Header>
         <Group>
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="sm"
+            size="sm"
+          />
           <Toolbar
             editorOrViewer={editorOrViewer}
             setEditorOrViewer={setEditorOrViewer}
@@ -591,10 +715,18 @@ const MainPage = () => {
 
       <AppShell.Navbar p="md">
         <Group gap="0">
-          <ActionIcon color={colorScheme === "light" ? "dark.9" : "gray.1"} variant="subtle" onClick={() => handleAddItem(null, null, "File")}>
+          <ActionIcon
+            color={colorScheme === "light" ? "dark.9" : "gray.1"}
+            variant="subtle"
+            onClick={() => handleAddItem(null, null, "File")}
+          >
             <IconFileFilled style={iconStyle} />
           </ActionIcon>
-          <ActionIcon color={colorScheme === "light" ? "dark.9" : "gray.1"} variant="subtle" onClick={() => handleAddItem(null, null, "Folder")}>
+          <ActionIcon
+            color={colorScheme === "light" ? "dark.9" : "gray.1"}
+            variant="subtle"
+            onClick={() => handleAddItem(null, null, "Folder")}
+          >
             <IconFolderFilled style={iconStyle} />
           </ActionIcon>
         </Group>
@@ -613,17 +745,33 @@ const MainPage = () => {
         </ScrollArea>
       </AppShell.Navbar>
 
-      <AppShell.Main className="main" h="100vh">
+      <AppShell.Main
+        className="main"
+        h="100vh"
+      >
         {selectedFile !== null ? (
           <>
-            <Text pl="xs" size="xl" mb="xs" fw={500}>
+            <Text
+              pl="xs"
+              size="xl"
+              mb="xs"
+              fw={500}
+            >
               {selectedFile.name}
             </Text>
             {largeScreen ? (
-              <Group h="100%" gap="0" justify="stretch" align="stretch">
+              <Group
+                h="100%"
+                gap="0"
+                justify="stretch"
+                align="stretch"
+              >
                 {editorOnLargeScreen && (
                   <>
-                    <MarkdownEditor body={textEditor} onChange={handleChangeTextEditor} />
+                    <MarkdownEditor
+                      body={textEditor}
+                      onChange={handleChangeTextEditor}
+                    />
                     <Divider orientation="vertical" />
                   </>
                 )}
@@ -631,14 +779,21 @@ const MainPage = () => {
                 <MarkdownViewer body={textEditor} />
               </Group>
             ) : editorOrViewer === "editor" ? (
-              <MarkdownEditor body={textEditor} onChange={handleChangeTextEditor} />
+              <MarkdownEditor
+                body={textEditor}
+                onChange={handleChangeTextEditor}
+              />
             ) : (
               <MarkdownViewer body={textEditor} />
             )}
           </>
         ) : (
-          <Text p="lg" ta="center">
-            No file selected. Select a file from the file explorer, or create a new file.
+          <Text
+            p="lg"
+            ta="center"
+          >
+            No file selected. Select a file from the file explorer, or create a
+            new file.
           </Text>
         )}
       </AppShell.Main>

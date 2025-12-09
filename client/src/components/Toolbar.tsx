@@ -1,20 +1,39 @@
 // Mantine
-import { Group, SegmentedControl, ActionIcon, useMantineColorScheme, Divider, VisuallyHidden, Tooltip } from "@mantine/core";
+import {
+  Group,
+  SegmentedControl,
+  ActionIcon,
+  useMantineColorScheme,
+  Divider,
+  VisuallyHidden,
+  Tooltip,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
 // Tabler Icons
-import { IconDatabaseImport, IconDeviceFloppy, IconEye, IconFileImport, IconFolderOpen, IconLogout2, IconMoon, IconPencil, IconPencilOff, IconSun } from "@tabler/icons-react";
+import {
+  IconDatabaseImport,
+  IconDeviceFloppy,
+  IconEye,
+  IconFileImport,
+  IconFolderOpen,
+  IconLogout2,
+  IconMoon,
+  IconPencil,
+  IconPencilOff,
+  IconSun,
+} from "@tabler/icons-react";
 
 // Components
-import SelectRecentFileButton from "./SelectRecentFileButton";
-import LoginButton from "./LoginButton";
-import RegisterButton from "./RegisterButton";
+import SelectRecentFileButton from "./SelectRecentFileButton.js";
+import LoginButton from "./LoginButton.js";
+import RegisterButton from "./RegisterButton.js";
 
 // Utils
-import iconStyle from "../utils/iconStyle";
+import iconStyle from "../utils/iconStyle.js";
 
 // Types
-import { onSelectFile } from "../types/crudFunctionsTypes";
+import { onSelectFile } from "../types/crudFunctionsTypes.js";
 
 type props = {
   editorOrViewer: string;
@@ -88,42 +107,79 @@ const Toolbar = ({
 
   return (
     <>
-      <Group align="center" gap="xs" m="0" p="xs">
-        <SelectRecentFileButton recentFileTabs={recentFileTabs} onSelectFile={onSelectFile} />
+      <Group
+        align="center"
+        gap="xs"
+        m="0"
+        p="xs"
+      >
+        <SelectRecentFileButton
+          recentFileTabs={recentFileTabs}
+          onSelectFile={onSelectFile}
+        />
 
         {editorOrViewerComponent}
-        <ActionIcon color="cyan.8" visibleFrom="xl" onClick={() => setEditorOnLargeScreen(!editorOnLargeScreen)}>
-          {editorOnLargeScreen ? <IconPencil style={iconStyle} /> : <IconPencilOff style={iconStyle} />}
+        <ActionIcon
+          color="cyan.8"
+          visibleFrom="xl"
+          onClick={() => setEditorOnLargeScreen(!editorOnLargeScreen)}
+        >
+          {editorOnLargeScreen ? (
+            <IconPencil style={iconStyle} />
+          ) : (
+            <IconPencilOff style={iconStyle} />
+          )}
         </ActionIcon>
         <Divider orientation="vertical" />
         {isLoggedIn ? (
           <>
             <Tooltip label="Save to state">
-              <ActionIcon size={buttonSize} color="pink.8" onClick={onSaveToState}>
+              <ActionIcon
+                size={buttonSize}
+                color="pink.8"
+                onClick={onSaveToState}
+              >
                 <IconDeviceFloppy style={iconStyle} />
               </ActionIcon>
             </Tooltip>
             {canSaveToDB ? (
               <Tooltip label="Save to account">
-                <ActionIcon size={buttonSize} color="pink.8" onClick={onSaveToDB}>
+                <ActionIcon
+                  size={buttonSize}
+                  color="pink.8"
+                  onClick={onSaveToDB}
+                >
                   <IconDatabaseImport style={iconStyle} />
                 </ActionIcon>
               </Tooltip>
             ) : (
               <Tooltip label="Save To State">
-                <ActionIcon size={buttonSize} disabled color="pink.8" onClick={onSaveToDB}>
+                <ActionIcon
+                  size={buttonSize}
+                  disabled
+                  color="pink.8"
+                  onClick={onSaveToDB}
+                >
                   <IconDatabaseImport style={iconStyle} />
                 </ActionIcon>
               </Tooltip>
             )}
             <Tooltip label="Import last-saved files">
-              <ActionIcon size={buttonSize} color="pink.8" onClick={onFetchFromDB}>
+              <ActionIcon
+                size={buttonSize}
+                color="pink.8"
+                onClick={onFetchFromDB}
+              >
                 <IconFileImport style={iconStyle} />
               </ActionIcon>
             </Tooltip>
             <Divider orientation="vertical" />
             <Tooltip label="Log out">
-              <ActionIcon size={buttonSize} color="orange.8" onClick={onLogout}>
+              <ActionIcon
+                size={buttonSize}
+                color="orange.8"
+                onClick={onLogout}
+              >
                 <IconLogout2 style={iconStyle} />
               </ActionIcon>
             </Tooltip>
@@ -136,8 +192,18 @@ const Toolbar = ({
         )}
         <Divider orientation="vertical" />
 
-        <ActionIcon size={buttonSize} color={colorScheme === "light" ? "dark.7" : "gray.7"} onClick={() => setColorScheme(colorScheme === "light" ? "dark" : "light")}>
-          {colorScheme === "light" ? <IconMoon style={iconStyle} /> : <IconSun style={iconStyle} />}
+        <ActionIcon
+          size={buttonSize}
+          color={colorScheme === "light" ? "dark.7" : "gray.7"}
+          onClick={() =>
+            setColorScheme(colorScheme === "light" ? "dark" : "light")
+          }
+        >
+          {colorScheme === "light" ? (
+            <IconMoon style={iconStyle} />
+          ) : (
+            <IconSun style={iconStyle} />
+          )}
         </ActionIcon>
       </Group>
     </>

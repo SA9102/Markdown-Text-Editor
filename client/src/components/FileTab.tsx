@@ -2,9 +2,15 @@
 import { useState } from "react";
 
 // Types
-import FileType from "../types/FileType";
-import FileEditOptions from "./FileEditOptions";
-import { onDelete, onToggleEdit, onUpdateName, onSelectFile, onAddFileTab } from "../types/crudFunctionsTypes";
+import FileType from "../types/FileType.js";
+import FileEditOptions from "./FileEditOptions.js";
+import {
+  onDelete,
+  onToggleEdit,
+  onUpdateName,
+  onSelectFile,
+  onAddFileTab,
+} from "../types/crudFunctionsTypes.js";
 
 // Mantine
 import { Button, Divider, Group, Text, TextInput } from "@mantine/core";
@@ -20,20 +26,41 @@ type FileTabProps = {
   onAddFileTab: onAddFileTab;
 };
 
-const FileTab = ({ file, selectedFileId, paddingLeft, onDelete, onToggleEdit, onAddFileTab, onUpdateName, onSelectFile }: FileTabProps) => {
+const FileTab = ({
+  file,
+  selectedFileId,
+  paddingLeft,
+  onDelete,
+  onToggleEdit,
+  onAddFileTab,
+  onUpdateName,
+  onSelectFile,
+}: FileTabProps) => {
   const [newName, setNewName] = useState(file.name);
   const [newlyCreated, setNewlyCreated] = useState(true);
 
   return (
     <>
-      <Group className={file.id === selectedFileId ? "file-tab-selected" : "file-tab"} gap="0" h="fit-content" style={{ paddingLeft: `${paddingLeft}rem` }}>
+      <Group
+        className={
+          file.id === selectedFileId ? "file-tab-selected" : "file-tab"
+        }
+        gap="0"
+        h="fit-content"
+        style={{ paddingLeft: `${paddingLeft}rem` }}
+      >
         <Group
           onClick={() => {
             if (!file.isEditingName) {
               onSelectFile(file.id, file.parentFolderIds, file.name);
             }
           }}
-          style={{ flexGrow: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+          style={{
+            flexGrow: 1,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
         >
           {file.isEditingName ? (
             <>
@@ -49,7 +76,11 @@ const FileTab = ({ file, selectedFileId, paddingLeft, onDelete, onToggleEdit, on
                         onClick={() => {
                           if (newName.trim() !== "") {
                             onToggleEdit(file.parentFolderIds, file.id);
-                            onUpdateName(file.parentFolderIds, file.id, newName);
+                            onUpdateName(
+                              file.parentFolderIds,
+                              file.id,
+                              newName
+                            );
                             setNewlyCreated(false);
                           }
                         }}
@@ -87,12 +118,22 @@ const FileTab = ({ file, selectedFileId, paddingLeft, onDelete, onToggleEdit, on
               />
             </>
           ) : (
-            <Text size="sm" className="name">
+            <Text
+              size="sm"
+              className="name"
+            >
               {file.name}
             </Text>
           )}
         </Group>
-        {!file.isEditingName && <FileEditOptions fileId={file.id} parentFolderIds={file.parentFolderIds} onEditName={onToggleEdit} onDelete={onDelete} />}
+        {!file.isEditingName && (
+          <FileEditOptions
+            fileId={file.id}
+            parentFolderIds={file.parentFolderIds}
+            onEditName={onToggleEdit}
+            onDelete={onDelete}
+          />
+        )}
       </Group>
       <Divider />
     </>

@@ -2,13 +2,24 @@
 import { ActionIcon, Menu, rem } from "@mantine/core";
 
 // Types
-import { onToggleEdit, onAdd, onDelete, onToggleExpand } from "../types/crudFunctionsTypes";
+import {
+  onToggleEdit,
+  onAdd,
+  onDelete,
+  onToggleExpand,
+} from "../types/crudFunctionsTypes.js";
 
 // Tabler Icons
-import { IconDotsVertical, IconFile, IconFolder, IconTrash, IconCursorText } from "@tabler/icons-react";
+import {
+  IconDotsVertical,
+  IconFile,
+  IconFolder,
+  IconTrash,
+  IconCursorText,
+} from "@tabler/icons-react";
 
 // Utils
-import iconStyle from "../utils/iconStyle";
+import iconStyle from "../utils/iconStyle.js";
 
 type props = {
   folderId: string;
@@ -19,7 +30,14 @@ type props = {
   onToggleExpand: onToggleExpand;
 };
 
-const FolderEditOptions = ({ folderId, parentFolderIds, onEditName, onAddItem, onDelete, onToggleExpand }: props) => {
+const FolderEditOptions = ({
+  folderId,
+  parentFolderIds,
+  onEditName,
+  onAddItem,
+  onDelete,
+  onToggleExpand,
+}: props) => {
   return (
     <>
       <Menu>
@@ -31,7 +49,10 @@ const FolderEditOptions = ({ folderId, parentFolderIds, onEditName, onAddItem, o
 
         <Menu.Dropdown>
           <Menu.Label>Options</Menu.Label>
-          <Menu.Item onClick={() => onEditName(parentFolderIds, folderId)} leftSection={<IconCursorText style={iconStyle} />}>
+          <Menu.Item
+            onClick={() => onEditName(parentFolderIds, folderId)}
+            leftSection={<IconCursorText style={iconStyle} />}
+          >
             Rename
           </Menu.Item>
 
@@ -53,7 +74,11 @@ const FolderEditOptions = ({ folderId, parentFolderIds, onEditName, onAddItem, o
           >
             Add Folder
           </Menu.Item>
-          <Menu.Item onClick={() => onDelete(parentFolderIds, folderId, "Folder")} color="red" leftSection={<IconTrash style={iconStyle} />}>
+          <Menu.Item
+            onClick={() => onDelete(parentFolderIds, folderId, "Folder")}
+            color="red"
+            leftSection={<IconTrash style={iconStyle} />}
+          >
             Delete
           </Menu.Item>
         </Menu.Dropdown>

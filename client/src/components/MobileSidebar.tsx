@@ -2,17 +2,25 @@
 import { Drawer, CloseButton, ActionIcon, Group, Divider } from "@mantine/core";
 
 // Types
-import FileAndFolderTreeType from "../types/FileAndFolderTreeType";
-import { onToggleExpand, onUpdateName, onToggleEdit, onAddFileTab, onAdd, onDelete, onSelectFile } from "../types/crudFunctionsTypes";
+import FileAndFolderTreeType from "../types/FileAndFolderTreeType.js";
+import {
+  onToggleExpand,
+  onUpdateName,
+  onToggleEdit,
+  onAddFileTab,
+  onAdd,
+  onDelete,
+  onSelectFile,
+} from "../types/crudFunctionsTypes.js";
 
 // Tabler Icons
 import { IconFileFilled, IconFolderFilled } from "@tabler/icons-react";
 
 // Components
-import FileExplorerPanel from "./FileExplorerPanel";
+import FileExplorerPanel from "./FileExplorerPanel.js";
 
 // Utils
-import iconStyle from "../utils/iconStyle";
+import iconStyle from "../utils/iconStyle.js";
 
 type props = {
   data: FileAndFolderTreeType;
@@ -29,9 +37,29 @@ type props = {
 };
 
 // --- THIS COMPONENT IS ONLY FOR MOBILE DEVICES ---
-const MobileSidebar = ({ data, selectedFileId, onToggleExpandFolder, onUpdateItemName, onEditItem, onAddFileTab, onAddItem, onDeleteItem, onSelectFile, fileExplorerOpened, onClose }: props) => {
+const MobileSidebar = ({
+  data,
+  selectedFileId,
+  onToggleExpandFolder,
+  onUpdateItemName,
+  onEditItem,
+  onAddFileTab,
+  onAddItem,
+  onDeleteItem,
+  onSelectFile,
+  fileExplorerOpened,
+  onClose,
+}: props) => {
   return (
-    <Drawer hiddenFrom="md" p="0" size="100%" opened={fileExplorerOpened} onClose={onClose} withCloseButton={false} transitionProps={{ duration: 200, timingFunction: "ease" }}>
+    <Drawer
+      hiddenFrom="md"
+      p="0"
+      size="100%"
+      opened={fileExplorerOpened}
+      onClose={onClose}
+      withCloseButton={false}
+      transitionProps={{ duration: 200, timingFunction: "ease" }}
+    >
       <Group mb="lg">
         <CloseButton onClick={onClose} />
         <Group gap="xs">

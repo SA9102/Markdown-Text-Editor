@@ -1,5 +1,5 @@
-import FileType from './FileType';
-import FileAndFolderTreeType from './FileAndFolderTreeType';
+import FileType from "./FileType.js";
+import FileAndFolderTreeType from "./FileAndFolderTreeType.js";
 
 type FolderType = {
   id: string;

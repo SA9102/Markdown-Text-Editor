@@ -2,7 +2,16 @@
 import { useState } from "react";
 
 // Mantine
-import { ActionIcon, Button, Modal, PasswordInput, Space, Text, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Modal,
+  PasswordInput,
+  Space,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 
@@ -13,7 +22,7 @@ import { IconUserPlus } from "@tabler/icons-react";
 import axios from "axios";
 
 // Utils
-import iconStyle from "../utils/iconStyle";
+import iconStyle from "../utils/iconStyle.js";
 
 type props = {
   setIsLoggedIn: (param: boolean) => void;
@@ -44,7 +53,9 @@ const RegisterButton = ({ setIsLoggedIn }: props) => {
       setIsInvalidUsername(false);
     }
 
-    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[£$%&*@^]).{8,}$/)) {
+    if (
+      !password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[£$%&*@^]).{8,}$/)
+    ) {
       setIsInvalidPassword(true);
       illegalFlag = true;
       setIsPasswordMismatch(false);
@@ -65,7 +76,11 @@ const RegisterButton = ({ setIsLoggedIn }: props) => {
     // If the credentials are valid, send them to the server
     try {
       setIsServerError(false);
-      const res = await axios({ method: "post", url: "https://mte2-backend.onrender.com/registerUser", data: { username, password } });
+      const res = await axios({
+        method: "post",
+        url: "https://mte2-backend.onrender.com/registerUser",
+        data: { username, password },
+      });
       console.log(res);
       if (res.data.success) {
         setIsLoggedIn(true);
@@ -73,7 +88,8 @@ const RegisterButton = ({ setIsLoggedIn }: props) => {
         notifications.show({
           color: "green",
           title: "Success!",
-          message: "You have successfully created an account, and are now logged in.",
+          message:
+            "You have successfully created an account, and are now logged in.",
         });
       } else {
         setIsUsernameTaken(true);
@@ -94,24 +110,47 @@ const RegisterButton = ({ setIsLoggedIn }: props) => {
           backgroundOpacity: 0.55,
           blur: 3,
         }}
-        transitionProps={{ transition: "fade", duration: 200, timingFunction: "ease" }}
+        transitionProps={{
+          transition: "fade",
+          duration: 200,
+          timingFunction: "ease",
+        }}
       >
-        <Title order={1} size="h2">
+        <Title
+          order={1}
+          size="h2"
+        >
           Create an account
         </Title>
         <Space h="md" />
         <TextInput
           label="Username"
-          error={isInvalidUsername ? "Invalid username." : isUsernameTaken ? "Username already taken." : ""}
+          error={
+            isInvalidUsername
+              ? "Invalid username."
+              : isUsernameTaken
+              ? "Username already taken."
+              : ""
+          }
           name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           withAsterisk
         />
         <Space h="sm" />
-        <PasswordInput label="Password" error={isInvalidPassword ? "Invalid password." : ""} name="password" value={password} onChange={(e) => setPassword(e.target.value)} withAsterisk />
+        <PasswordInput
+          label="Password"
+          error={isInvalidPassword ? "Invalid password." : ""}
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          withAsterisk
+        />
         <Space h="xs" />
-        <Text size="xs" c="gray">
+        <Text
+          size="xs"
+          c="gray"
+        >
           Password must:
           <br />- Be at least 8 characters long
           <br />- Have at least one uppercase letter
@@ -129,17 +168,26 @@ const RegisterButton = ({ setIsLoggedIn }: props) => {
           withAsterisk
         />
         {isServerError && (
-          <Text c="red" size="xs">
+          <Text
+            c="red"
+            size="xs"
+          >
             A server error occurred. Please try again.
           </Text>
         )}
         <Space h="sm" />
-        <Button w="100%" onClick={handleSubmitForm}>
+        <Button
+          w="100%"
+          onClick={handleSubmitForm}
+        >
           Register
         </Button>
       </Modal>
 
-      <ActionIcon color="orange.8" onClick={open}>
+      <ActionIcon
+        color="orange.8"
+        onClick={open}
+      >
         <IconUserPlus style={iconStyle} />
       </ActionIcon>
     </>

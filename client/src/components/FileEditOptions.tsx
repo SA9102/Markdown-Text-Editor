@@ -2,10 +2,14 @@
 import { ActionIcon, Menu, rem } from "@mantine/core";
 
 // Types
-import { onToggleEdit, onDelete } from "../types/crudFunctionsTypes";
+import { onToggleEdit, onDelete } from "../types/crudFunctionsTypes.js";
 
 // Tabler Icons
-import { IconDotsVertical, IconTrash, IconCursorText } from "@tabler/icons-react";
+import {
+  IconDotsVertical,
+  IconTrash,
+  IconCursorText,
+} from "@tabler/icons-react";
 
 type props = {
   fileId: string;
@@ -14,7 +18,12 @@ type props = {
   onDelete: onDelete;
 };
 
-const FileEditOptions = ({ fileId, parentFolderIds, onEditName, onDelete }: props) => {
+const FileEditOptions = ({
+  fileId,
+  parentFolderIds,
+  onEditName,
+  onDelete,
+}: props) => {
   const iconStyle = { width: rem(16), height: rem(16) };
 
   return (
@@ -28,10 +37,17 @@ const FileEditOptions = ({ fileId, parentFolderIds, onEditName, onDelete }: prop
 
         <Menu.Dropdown>
           <Menu.Label>Options</Menu.Label>
-          <Menu.Item onClick={() => onEditName(parentFolderIds, fileId)} leftSection={<IconCursorText style={iconStyle} />}>
+          <Menu.Item
+            onClick={() => onEditName(parentFolderIds, fileId)}
+            leftSection={<IconCursorText style={iconStyle} />}
+          >
             Rename
           </Menu.Item>
-          <Menu.Item onClick={() => onDelete(parentFolderIds, fileId, "File")} color="red" leftSection={<IconTrash style={iconStyle} />}>
+          <Menu.Item
+            onClick={() => onDelete(parentFolderIds, fileId, "File")}
+            color="red"
+            leftSection={<IconTrash style={iconStyle} />}
+          >
             Delete
           </Menu.Item>
         </Menu.Dropdown>

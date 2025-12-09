@@ -2,14 +2,22 @@
 import { Stack } from "@mantine/core";
 
 // Components
-import FolderTab from "./FolderTab";
-import FileTab from "./FileTab";
+import FolderTab from "./FolderTab.js";
+import FileTab from "./FileTab.js";
 
 // Types
-import FileAndFolderTreeType from "../types/FileAndFolderTreeType";
-import FolderType from "../types/FolderType";
-import FileType from "../types/FileType";
-import { onDelete, onToggleEdit, onUpdateName, onAdd, onToggleExpand, onSelectFile, onAddFileTab } from "../types/crudFunctionsTypes";
+import FileAndFolderTreeType from "../types/FileAndFolderTreeType.js";
+import FolderType from "../types/FolderType.js";
+import FileType from "../types/FileType.js";
+import {
+  onDelete,
+  onToggleEdit,
+  onUpdateName,
+  onAdd,
+  onToggleExpand,
+  onSelectFile,
+  onAddFileTab,
+} from "../types/crudFunctionsTypes.js";
 
 type FileExplorerPanelProps = {
   data: FileAndFolderTreeType;
@@ -27,9 +35,25 @@ const isFolder = (item: FolderType | FileType): item is FolderType => {
   return (item as FolderType).isExpand !== undefined;
 };
 
-const FileExplorerPanel = ({ data, selectedFileId, onToggleExpand, onUpdateName, onAddFileTab, onToggleEdit, onAdd, onDelete, onSelectFile }: FileExplorerPanelProps) => {
+const FileExplorerPanel = ({
+  data,
+  selectedFileId,
+  onToggleExpand,
+  onUpdateName,
+  onAddFileTab,
+  onToggleEdit,
+  onAdd,
+  onDelete,
+  onSelectFile,
+}: FileExplorerPanelProps) => {
   return (
-    <Stack h="100vh" style={{ flex: "1 1 0px" }} gap="0" m="0" id="folder-and-files-panel">
+    <Stack
+      h="100vh"
+      style={{ flex: "1 1 0px" }}
+      gap="0"
+      m="0"
+      id="folder-and-files-panel"
+    >
       {data.map((item) => {
         if (isFolder(item)) {
           return (

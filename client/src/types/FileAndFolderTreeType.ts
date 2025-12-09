@@ -1,5 +1,5 @@
-import FolderType from './FolderType';
-import FileType from './FileType';
+import FolderType from "./FolderType.js";
+import FileType from "./FileType.js";
 
 type FileAndFolderTreeType = (FolderType | FileType)[];
 

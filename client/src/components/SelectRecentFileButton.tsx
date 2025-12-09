@@ -1,5 +1,5 @@
 // Types
-import { onSelectFile } from "../types/crudFunctionsTypes";
+import { onSelectFile } from "../types/crudFunctionsTypes.js";
 
 // Mantine
 import { ActionIcon, Button, Modal, Stack, Text } from "@mantine/core";
@@ -22,14 +22,25 @@ const SelectRecentFileButton = ({ recentFileTabs, onSelectFile }: props) => {
 
   return (
     <>
-      <ActionIcon color="cyan.8" aria-label="Select recently-opened file" onClick={open}>
-        <IconFileTime style={{ width: "70%", height: "70%" }} stroke={1.5} />
+      <ActionIcon
+        color="cyan.8"
+        aria-label="Select recently-opened file"
+        onClick={open}
+      >
+        <IconFileTime
+          style={{ width: "70%", height: "70%" }}
+          stroke={1.5}
+        />
       </ActionIcon>
       <Modal
         opened={opened}
         onClose={close}
         title="Select recently-opened file"
-        transitionProps={{ transition: "fade", duration: 200, timingFunction: "ease" }}
+        transitionProps={{
+          transition: "fade",
+          duration: 200,
+          timingFunction: "ease",
+        }}
         overlayProps={{
           backgroundOpacity: 0.55,
           blur: 3,

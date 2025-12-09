@@ -2,7 +2,16 @@
 import { useState } from "react";
 
 // Mantine
-import { ActionIcon, Button, Modal, PasswordInput, Space, Text, TextInput, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Modal,
+  PasswordInput,
+  Space,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -13,7 +22,7 @@ import { IconLogin2 } from "@tabler/icons-react";
 import axios from "axios";
 
 // Utils
-import iconStyle from "../utils/iconStyle";
+import iconStyle from "../utils/iconStyle.js";
 
 type props = {
   setIsLoggedIn: (param: boolean) => void;
@@ -29,7 +38,12 @@ const LoginButton = ({ setIsLoggedIn }: props) => {
 
   const handleSubmitForm = async () => {
     try {
-      const res = await axios({ method: "post", url: "https://mte2-backend.onrender.com/loginUser", data: { username, password }, withCredentials: true });
+      const res = await axios({
+        method: "post",
+        url: "https://mte2-backend.onrender.com/loginUser",
+        data: { username, password },
+        withCredentials: true,
+      });
       if (res.data.username) {
         setIsLoggedIn(true);
         close();
@@ -63,32 +77,61 @@ const LoginButton = ({ setIsLoggedIn }: props) => {
           backgroundOpacity: 0.55,
           blur: 3,
         }}
-        transitionProps={{ transition: "fade", duration: 200, timingFunction: "ease" }}
+        transitionProps={{
+          transition: "fade",
+          duration: 200,
+          timingFunction: "ease",
+        }}
       >
-        <Title order={1} size="h2">
+        <Title
+          order={1}
+          size="h2"
+        >
           Sign into your account
         </Title>
         <Space h="md" />
-        <TextInput label="Username" value={username} onChange={(e) => setUsername(e.target.value)} withAsterisk />
+        <TextInput
+          label="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          withAsterisk
+        />
         <Space h="sm" />
-        <PasswordInput label="Password" value={password} onChange={(e) => setPassword(e.target.value)} withAsterisk />
+        <PasswordInput
+          label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          withAsterisk
+        />
         {isLoginFail && (
-          <Text c="red" size="xs">
+          <Text
+            c="red"
+            size="xs"
+          >
             Username or password is incorrect.
           </Text>
         )}
         {isServerError && (
-          <Text c="red" size="xs">
+          <Text
+            c="red"
+            size="xs"
+          >
             A server error occurred. Please try again.
           </Text>
         )}
         <Space h="sm" />
-        <Button w="100%" onClick={handleSubmitForm}>
+        <Button
+          w="100%"
+          onClick={handleSubmitForm}
+        >
           Log In
         </Button>
       </Modal>
 
-      <ActionIcon color="orange.8" onClick={open}>
+      <ActionIcon
+        color="orange.8"
+        onClick={open}
+      >
         <IconLogin2 style={iconStyle} />
       </ActionIcon>
     </>

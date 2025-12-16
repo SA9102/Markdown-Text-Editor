@@ -21,35 +21,74 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
 import type { VariantProps } from "class-variance-authority";
+import type { FilesAndFolders, NodeTree } from "@/types/file-system/NodeTree";
+import type { Folder } from "@/types/file-system/Folder";
+import type { NodeMap } from "@/types/file-system/NodeMap";
+import { useState } from "react";
+import FileSystemNode from "./FileSystemNode";
 
 // Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+// const items: NodeMap =  {
+//   "1": {
+//     id: "1",
+//     type: "folder",
+//     name: "folder 1",
+//     isExpanded: false,
+//     isEditingName: false,
+//     childrenIds: ["4"],
+//   },
+//   "2": {
+//     id: "2",
+//     type: "folder",
+//     name: "folder 2",
+//     isExpanded: false,
+//     isEditingName: false,
+//     childrenIds: null,
+//   },
+//   "3": {
+//     id: "3",
+//     type: "folder",
+//     name: "folder 3",
+//     isExpanded: false,
+//     isEditingName: false,
+//     childrenIds: null,
+//   },
+//   "4": {
+//     id: "4",
+//     type: "folder",
+//     name: "file",
+//     isExpanded: false,
+//     isEditingName: false,
+//     childrenIds: null,
+//   }
+// };
+
+// const rootIds: string[] = ["1", "2", "3"];
+
+type node = {
+  id: string;
+  name: string;
+  nodes?: node[];
+};
+
+// const buildTree = (rootIds: string[], map: NodeMap): NodeTree[] => {
+//   return rootIds.map((id) => {
+//     const node = map[id]
+//     if (node.type === "folder" && node.childrenIds) {
+//       return {...node, children: buildTree(node.childrenIds, map)}
+//     } else {
+//       return node;
+//     }
+//     // if (node.type === "folder" && node.childrenIds) {
+//     //   return {
+//     //     ...node,
+//     //     children: node.childrenIds ? buildTree(node.childrenIds, map) : []
+//     //   };
+//     // } else {
+//     //   return node
+//     // }
+//   })
+// }
 
 const buttonProps: VariantProps<typeof Button> = {
   size: "icon",
@@ -57,6 +96,35 @@ const buttonProps: VariantProps<typeof Button> = {
 };
 
 const NavigationSidebar = () => {
+  const [nodes, setNodes] = useState<node[]>([
+    {
+      id: "1",
+      name: "Home",
+      nodes: [
+        {
+          id: "2",
+          name: "Documents",
+          nodes: [
+            {
+              id: "1",
+              name: "report.docx",
+            },
+          ],
+        },
+        {
+          id: "3",
+          name: "Downloads",
+          nodes: [],
+        },
+        {
+          id: "4",
+          name: "Pictures",
+          nodes: [],
+        },
+      ],
+    },
+  ]);
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -71,18 +139,11 @@ const NavigationSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              {nodes.map((node) => (
+                <FileSystemNode node={node} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

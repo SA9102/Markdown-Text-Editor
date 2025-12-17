@@ -106,7 +106,7 @@ const NavigationSidebar = () => {
           name: "Documents",
           nodes: [
             {
-              id: "1",
+              id: "5",
               name: "report.docx",
             },
           ],
@@ -123,6 +123,9 @@ const NavigationSidebar = () => {
         },
       ],
     },
+  ]);
+  const [nodeIdTree, setNodeIdTree] = useState([
+    { "1": [{ "2": ["5"] }, { "3": [] }, { "4": [] }] },
   ]);
 
   return (

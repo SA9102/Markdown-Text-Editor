@@ -20,10 +20,13 @@ import {
 } from "../ui/context-menu";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { useNodeStore } from "@/store/nodeStore";
 
 const FileSystemNode = ({ node }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const setSelectedFileId = useNodeStore((s) => s.setSelectedFileId);
 
   const isFolder = () => node.nodes;
 
@@ -43,6 +46,8 @@ const FileSystemNode = ({ node }) => {
               onClick={() => {
                 if (isFolder()) {
                   setIsOpen(!isOpen);
+                } else {
+                  setSelectedFileId(node.id);
                 }
               }}
             >

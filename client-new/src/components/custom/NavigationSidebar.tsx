@@ -22,10 +22,13 @@ import {
 import { Button } from "../ui/button";
 import type { VariantProps } from "class-variance-authority";
 import type { FilesAndFolders, NodeTree } from "@/types/file-system/NodeTree";
+import type { File } from "../../types/file-system/File";
 import type { Folder } from "@/types/file-system/Folder";
 import type { NodeMap } from "@/types/file-system/NodeMap";
 import { useState } from "react";
 import FileSystemNode from "./FileSystemNode";
+import type { Node } from "@/types/file-system/Node";
+import { useNodeStore } from "@/store/nodeStore";
 
 // Menu items.
 // const items: NodeMap =  {
@@ -65,12 +68,6 @@ import FileSystemNode from "./FileSystemNode";
 
 // const rootIds: string[] = ["1", "2", "3"];
 
-type node = {
-  id: string;
-  name: string;
-  nodes?: node[];
-};
-
 // const buildTree = (rootIds: string[], map: NodeMap): NodeTree[] => {
 //   return rootIds.map((id) => {
 //     const node = map[id]
@@ -96,37 +93,27 @@ const buttonProps: VariantProps<typeof Button> = {
 };
 
 const NavigationSidebar = () => {
-  const [nodes, setNodes] = useState<node[]>([
-    {
-      id: "1",
-      name: "Home",
-      nodes: [
-        {
-          id: "2",
-          name: "Documents",
-          nodes: [
-            {
-              id: "5",
-              name: "report.docx",
-            },
-          ],
-        },
-        {
-          id: "3",
-          name: "Downloads",
-          nodes: [],
-        },
-        {
-          id: "4",
-          name: "Pictures",
-          nodes: [],
-        },
-      ],
-    },
-  ]);
-  const [nodeIdTree, setNodeIdTree] = useState([
-    { "1": [{ "2": ["5"] }, { "3": [] }, { "4": [] }] },
-  ]);
+  const nodes = useNodeStore((s) => s.nodes);
+  const rootNodeIds = useNodeStore((s) => s.rootNodeIds);
+
+  const isFolder = (node: File | Folder): node is Folder => {
+    return "nodes" in node;
+  };
+
+  const buildTree = (nodeIds: string[]): (File | Folder)[] => {
+    return nodeIds.map((id: string) => {
+      const node = nodes.find((n) => n.id === id);
+      // If it has the nodeIds property, then it is a folder, otherwise it is a file
+      if (!node) {
+        throw new Error(`Node with id ${id} not found`);
+      }
+      if (isFolder(node)) {
+        return { ...node, nodes: buildTree(node.nodes as string[]) };
+      } else {
+        return node;
+      }
+    });
+  };
 
   return (
     <Sidebar>
@@ -145,7 +132,7 @@ const NavigationSidebar = () => {
           {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
-              {nodes.map((node) => (
+              {buildTree(rootNodeIds).map((node) => (
                 <FileSystemNode node={node} />
               ))}
             </SidebarMenu>

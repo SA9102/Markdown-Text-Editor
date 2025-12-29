@@ -1,6 +1,15 @@
 import Toolbar from "./components/custom/Toolbar";
 import NavigationSidebar from "./components/custom/NavigationSidebar";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import { useNodeStore } from "./store/nodeStore";
+import { useEffect, useState } from "react";
+import { Textarea } from "./components/ui/textarea";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "./components/ui/resizable";
+import EditorViewer from "./components/custom/EditorViewer";
 
 const App = () => {
   return (
@@ -9,14 +18,9 @@ const App = () => {
       <SidebarProvider>
         {/* <div className="flex flex-1 overflow-hidden"> */}
         <NavigationSidebar />
-        <main>
+        <main className="w-full">
           <SidebarTrigger />
-          <div className="p-4">
-            <h1 className="text-2xl font-bold">
-              Welcome to the Markdown Text Editor
-            </h1>
-            <p className="mt-2">Start editing your markdown files!</p>
-          </div>
+          <EditorViewer />
         </main>
         {/* </div> */}
       </SidebarProvider>
